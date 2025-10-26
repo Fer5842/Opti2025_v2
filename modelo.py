@@ -12,9 +12,9 @@ R = ['R1', 'R2', 'R3']  # 3 relaves
 #fuentes de agua, f
 F = ['F1', 'F2']  # 2 fuentes de agua
 #nodos de la red, fuentes, nodos intermedios y relaves, n
-N = F + ['N1', 'N2'] + R  # nodos intermedios N1, N2
+N = F + R  
 #arcos de la red, (i,j)
-A = [('F1', 'N1'), ('F2', 'N1'), ('N1', 'N2'), ('N2', 'R1'), ('N2', 'R2'), ('N1', 'R3')]  # ejemplo de arcos
+A = [('F1', 'R1'), ('F1', 'R2'), ('F2', 'R2'), ('F2', 'R3')]
 
 #   parámetros
 #costo por ton de agua aplicado en relave r, mes t
@@ -155,11 +155,7 @@ model.addConstr(
     + quicksum(C_flujo[i,j]*x_flujo[i,j,t] for (i,j) in A for t in T)
     <= B_max
 )
-#R13 Balance de flujo en nodos intermedios
-for n in N:
-    if n not in F and n not in R:  # solo para nodos intermedios
-        for t in T:
-            model.addConstr(quicksum(x_flujo[i,j,t] for (i,j) in A if j == n) - quicksum(x_flujo[i,j,t] for (i,j) in A if i == n) == 0)
+#Se elimino R13 Balance de flujo en nodos intermedios
 
 #R14 Condición inicial de la fuente
 for f in F:
@@ -171,13 +167,7 @@ for f in F:
         if t > 0:
             model.addConstr(W[f,t] == W[f,t-1] + W_entrante[f,t] - quicksum(x_flujo[i,j,t] for (i,j) in A if i == f))
 
-#R16 No extraer más de lo disponible
-for f in F:
-    for t in T:
-        if t==0: #agregue esto pq no existia W[f,-1], pq cuando t=0 se intenta acceder a W[f,-1] q no existe en el diccionario
-            model.addConstr(quicksum(x_flujo[i,j,t] for (i,j) in A if i == f) <= W_entrante[f,t])
-        else:
-            model.addConstr(quicksum(x_flujo[i,j,t] for (i,j) in A if i == f) <= W[f,t-1] + W_entrante[f,t])
+#Se elimino R16 No extraer más de lo disponible
 
 #R17 Nodos de relave
 for r in R:
