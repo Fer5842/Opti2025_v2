@@ -11,7 +11,24 @@ pmax_df = pd.read_csv("datos/Pmax.csv")
 uagua_df = pd.read_csv("datos/Uagua.csv")
 cveginst_df = pd.read_csv("datos/Cveginst.csv")
 hcubierta_df = pd.read_csv("datos/Hcubierta.csv")
+cvegmant_df = pd.read_csv("datos/Cvegmant.csv")
+hmant_df = pd.read_csv("datos/Hmant.csv")
+pmprom_df = pd.read_csv("datos/PMprom.csv")
+pmmax_df = pd.read_csv("datos/PMmax.csv")
 
+#FALTAN
+#fuentes_df = pd.read_csv("datos/Fuentes.csv")
+#arcos_df = pd.read_csv("datos/Arcos.csv")
+#pmapagregado_df = pd.read_csv("datos/PMapagregado.csv")
+#pmbase_df = pd.read_csv("datos/PMbase.csv")
+#alpha_df = pd.read_csv("datos/Alpha.csv")
+#beta_df = pd.read_csv("datos/Beta.csv")
+#pcubierta_df = pd.read_csv("datos/Pcubierta.csv")
+#wbase_df = pd.read_csv("datos/Wbase.csv")
+#cflujo_df = pd.read_csv("datos/Cflujo.csv")
+#kflujo_df = pd.read_csv("datos/Kflujo.csv")
+#a_df = pd.read_csv("datos/A.csv")
+#wentrante_df = pd.read_csv("datos/Wentrante.csv")
 
 # --------Datos--------------------------------------
 
@@ -20,6 +37,7 @@ hcubierta_df = pd.read_csv("datos/Hcubierta.csv")
 T = list(range(12))  # 12 meses
 #relaves, r
 R = relaves_df["Relave"].tolist()  #5r['Talabre', 'Pampa Austral', 'Potrerillos II', 'Ovejeria', 'Caren']
+
 #FALTA fuentes de agua, f 
 F = ['F1', 'F2'] 
 #nodos de la red, fuentes, nodos intermedios y relaves, n
@@ -42,24 +60,32 @@ P_max = {row["Relave"]: int(row["Pmax"]) for _, row in pmax_df.iterrows()}
 U_agua = {row["Relave"]: int(row["Uagua"]) for _, row in uagua_df.iterrows()}
 #agua minima necesaria para humedecer una cubierta vegetal a su nivel optimo en relave r por mes de planificación
 H_cubierta = {row["Relave"]: row["Hcubierta"] for _, row in hcubierta_df.iterrows()}
+#costo mantención cubierta vegetal en relave r, mes t
+C_vegmant = {(row["Relaves"], row["Mes"]-1): row["Cvegmant"] for _, row in cvegmant_df.iterrows()}
+#umbral maximo de PM permitido en relave r por mes de planificación t, el csv esta anual se divide en 12
+PM_max = {(row["Relaves"], t): row["PMmax"]/12 for _, row in pmmax_df.iterrows() for t in T}
+
+#umbral promedio maximo de PM permitido para todos los relaves r en1 mes
+#ojo Pm_prom debe esar ug/m^3 y esta en ton/mes en csv, por lo que 1ton= 1x10^9 ug, 
+PM_prom = {t: float(pmprom_df["PMprom"].iloc[0]) for t in T} #un único valor promedio que se aplica a todos los meses.
+
+#agua minima necesaria para humedecer relave r cuando se realiza mantención por mes de planificación
+#Obs: hay que aplicar 2L/mˆ2 según https://www.redalyc.org/articulo.oa?id=223558779003. Conversión 1 ton = 1000 L
+#2L/m2 = 2/1000 ton/m2 = 0.002 ton/m2
+#H_mant = {row["Relaves"]: row["Hmant"] /1000 for _, row in hmant_df.iterrows()}
+H_mant = {r: 50 for r in R}
+
+
 
 #------FALTAN:---------
-#costo mantención cubierta vegetal en relave r, mes t
-C_vegmant = {(r,t): 2 for r in R for t in T}
-#umbral maximo de PM permitido en relave r por mes de planificación t
-PM_max = {(r,t): 25 for r in R for t in T}
 #concentracion inicial de PM en relave r
 PM_base = {r: 10 for r in R}
 #concentracion de PM que se agrega al relave r, mes t
 PM_agregado = {(r,t): 2 for r in R for t in T}
-#umbral promedio maximo de PM permitido para todos los relaves r en mes t
-PM_prom = {t: 20 for t in T}
 #reducción PM por cada ton de agua aplicada en relave r
 alpha = {r: 0.1 for r in R}
 #maxima reducción PM por cubierta vegetal en relave r por mes de planificación
 beta = {r: 5 for r in R}
-#agua minima necesaria para humedecer relave r cuando se realiza mantención por mes de planificación
-H_mant = {r: 50 for r in R}
 #cantidad  maxima de periodos consecutivos que pueden pasar sin satisfacer completamente el requerimiento de agua de la cubierta
 P_cubierta = 3
 #cantidad agua inicial en fuente f
@@ -243,7 +269,7 @@ with open("resultados.txt", "w", encoding="utf-8") as f:
 
         # (e) Validación de factibilidad y consistencia
         f.write("(e) Validación de factibilidad y consistencia:\n")
-¿        
+        
         # Presupuesto total
         presupuesto_total = sum(C_agua[r,t]*x_agua[r,t].X + C_vegmant[r,t]*z_veg[r,t].X + C_veginst[r,t]*y_veg[r,t].X 
                                 for r in R for t in T) + sum(C_flujo[i,j]*x_flujo[i,j,t].X for (i,j) in A for t in T)
@@ -263,4 +289,10 @@ with open("resultados.txt", "w", encoding="utf-8") as f:
         f.write("\nNo se encontró solución óptima.")
 
 print("Resultados guardados en 'resultados.txt'")
+
+if model.Status == GRB.INFEASIBLE:
+    print("⚠️ El modelo es infactible. Generando archivo de diagnóstico...")
+    model.computeIIS()
+    model.write("infeasible_constraints.ilp")
+    print("Archivo 'infeasible_constraints.ilp' generado. Revisa las restricciones conflictivas.")
 
