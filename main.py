@@ -15,6 +15,7 @@ cvegmant_df = pd.read_csv("datos/Cvegmant.csv")
 hmant_df = pd.read_csv("datos/Hmant.csv")
 pmprom_df = pd.read_csv("datos/PMprom.csv")
 pmmax_df = pd.read_csv("datos/PMmax.csv")
+#pcubierta_df = pd.read_csv("datos/Pcubierta.csv")
 
 #FALTAN
 #fuentes_df = pd.read_csv("datos/Fuentes.csv")
@@ -23,7 +24,6 @@ pmmax_df = pd.read_csv("datos/PMmax.csv")
 #pmbase_df = pd.read_csv("datos/PMbase.csv")
 #alpha_df = pd.read_csv("datos/Alpha.csv")
 #beta_df = pd.read_csv("datos/Beta.csv")
-#pcubierta_df = pd.read_csv("datos/Pcubierta.csv")
 #wbase_df = pd.read_csv("datos/Wbase.csv")
 #cflujo_df = pd.read_csv("datos/Cflujo.csv")
 #kflujo_df = pd.read_csv("datos/Kflujo.csv")
@@ -70,12 +70,11 @@ PM_max = {(row["Relaves"], t): row["PMmax"]/12 for _, row in pmmax_df.iterrows()
 PM_prom = {t: float(pmprom_df["PMprom"].iloc[0]) for t in T} #un único valor promedio que se aplica a todos los meses.
 
 #agua minima necesaria para humedecer relave r cuando se realiza mantención por mes de planificación
-#Obs: hay que aplicar 2L/mˆ2 según https://www.redalyc.org/articulo.oa?id=223558779003. Conversión 1 ton = 1000 L
-#2L/m2 = 2/1000 ton/m2 = 0.002 ton/m2
-#H_mant = {row["Relaves"]: row["Hmant"] /1000 for _, row in hmant_df.iterrows()}
-H_mant = {r: 50 for r in R}
+H_mant = {row["Relaves"]: row["Hmant"] /1000 for _, row in hmant_df.iterrows()}
+#H_mant = {r: 50 for r in R}
 
-
+#cantidad  maxima de periodos consecutivos que pueden pasar sin satisfacer completamente el requerimiento de agua de la cubierta
+P_cubierta = 3
 
 #------FALTAN:---------
 #concentracion inicial de PM en relave r
@@ -86,16 +85,15 @@ PM_agregado = {(r,t): 2 for r in R for t in T}
 alpha = {r: 0.1 for r in R}
 #maxima reducción PM por cubierta vegetal en relave r por mes de planificación
 beta = {r: 5 for r in R}
-#cantidad  maxima de periodos consecutivos que pueden pasar sin satisfacer completamente el requerimiento de agua de la cubierta
-P_cubierta = 3
+#ton de agua minima que se aplica a un relave r si se decide humedecerlo
+a = {r: 50 for r in R}
+
 #cantidad agua inicial en fuente f
 W_base = {f: 1000 for f in F}
 #costo transportar 1 ton de agua por arco (i.j)
 C_flujo = {(i,j): 5 for (i,j) in A}  # todos los arcos tienen costo 5
 #capacidad maxima de flujo de agua en argo (i,j) mensualmente
 K_flujo ={(i,j): 500 for (i,j) in A}
-#ton de agua minima que se aplica a un relave r si se decide humedecerlo
-a = {r: 50 for r in R}
 #flujo neto entrante a fuente f durante mes t.
 W_entrante = {(f,t): 100 for f in F for t in T}
 
