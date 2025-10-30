@@ -243,12 +243,11 @@ with open("resultados.txt", "w", encoding="utf-8") as f:
 
         # (e) Validación de factibilidad y consistencia
         f.write("(e) Validación de factibilidad y consistencia:\n")
-        factible = True
+¿        
         # Presupuesto total
         presupuesto_total = sum(C_agua[r,t]*x_agua[r,t].X + C_vegmant[r,t]*z_veg[r,t].X + C_veginst[r,t]*y_veg[r,t].X 
                                 for r in R for t in T) + sum(C_flujo[i,j]*x_flujo[i,j,t].X for (i,j) in A for t in T)
         if presupuesto_total > B_max:
-            factible = False
             f.write(f"Presupuesto excedido: {presupuesto_total} > {B_max}\n")
         else:
             f.write(f"Presupuesto dentro del límite: {presupuesto_total} <= {B_max}\n")
@@ -257,12 +256,11 @@ with open("resultados.txt", "w", encoding="utf-8") as f:
         for r in R:
             for t in T:
                 if PM[r,t].X > PM_max[r,t]:
-                    factible = False
-                    f.write(f"PM máximo excedido en {r}, mes {t+1}: {PM[r,t].X:.2f} > {PM_max[r,t]}\n")
+                    f.write(f"PM máximo excedido en {r}, mes {t+1}: {PM[r,t].X} > {PM_max[r,t]}\n")
 
         f.write("\nLa solución es óptima")
     else:
-        f.write("No se encontró solución óptima.\n")
+        f.write("\nNo se encontró solución óptima.")
 
 print("Resultados guardados en 'resultados.txt'")
 
