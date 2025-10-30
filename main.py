@@ -206,38 +206,31 @@ model.setObjective(quicksum(PM[r,t] for r in R for t in T), GRB.MINIMIZE)
 model.optimize()
 
 # ---------imprimir resultados-----------------------------
-'''if model.Status == GRB.OPTIMAL:
-    print("\nValor óptimo de la función objetivo:", model.ObjVal)
-    for r in R:
-        for t in T:
-            print(f"Relave {r}, Mes {t}, PM = {PM[r, t].X:.2f}, xagua = {x_agua[r, t].X:.2f}")'''
-
-# ---------Manejo de soluciones estilo ejemplo P3.ipynb-----------------------------
 # Abrir archivo de resultados
-with open("resultados.txt", "w") as f:
+with open("resultados.txt", "w", encoding="utf-8") as f:
     f.write("---------- Manejo de Soluciones ----------\n\n")
 
     if model.Status == GRB.OPTIMAL:
         # (a) Valor óptimo del problema
-        f.write(f"(a) Valor óptimo del problema: {model.ObjVal:.2f}\n\n")
+        f.write(f"(a) Valor óptimo del problema: {model.ObjVal}\n\n")
 
         # (b) Agua aplicada por relave y por mes
         f.write("(b) Agua aplicada por relave y por mes:\n")
         for r in R:
             total_agua_r = sum(x_agua[r,t].X for t in T)
-            f.write(f"Relave {r}, agua total aplicada: {total_agua_r:.2f}\n")
+            f.write(f"Relave {r}, agua total aplicada: {total_agua_r}\n")
             for t in T:
-                f.write(f"  Mes {t+1}: agua={x_agua[r,t].X:.2f}, cubierta={x_cubierta[r,t].X:.2f}, PM={PM[r,t].X:.2f}\n")
+                f.write(f"  Mes {t+1}: agua={x_agua[r,t].X}, cubierta={x_cubierta[r,t].X}, PM={PM[r,t].X}\n")
         f.write("\n")
 
         # (c) Flujo total desde cada fuente y por arco
         f.write("(c) Flujo total desde cada fuente y por arco:\n")
         for f_source in F:
             total_fuente = sum(x_flujo[i,j,t].X for (i,j) in A if i==f_source for t in T)
-            f.write(f"Fuente {f_source}, flujo total enviado: {total_fuente:.2f}\n")
+            f.write(f"Fuente {f_source}, flujo total enviado: {total_fuente}\n")
         for (i,j) in A:
             total_arco = sum(x_flujo[i,j,t].X for t in T)
-            f.write(f"Arco {i}->{j}, flujo total: {total_arco:.2f}\n")
+            f.write(f"Arco {i}->{j}, flujo total: {total_arco}\n")
         f.write("\n")
 
         # (d) Cubierta vegetal activa y mantenciones
@@ -245,115 +238,31 @@ with open("resultados.txt", "w") as f:
         for r in R:
             total_cubierta = sum(z_veg[r,t].X for t in T)
             total_mant = sum(y_mant[r,t].X for t in T)
-            f.write(f"Relave {r}: cubierta activa {total_cubierta:.0f} meses, mantenciones {total_mant:.0f} meses\n")
+            f.write(f"Relave {r}: cubierta activa {total_cubierta} meses, mantenciones {total_mant} meses\n")
         f.write("\n")
 
         # (e) Validación de factibilidad y consistencia
         f.write("(e) Validación de factibilidad y consistencia:\n")
         factible = True
-        inconsistencias = []
-
+        # Presupuesto total
         presupuesto_total = sum(C_agua[r,t]*x_agua[r,t].X + C_vegmant[r,t]*z_veg[r,t].X + C_veginst[r,t]*y_veg[r,t].X 
                                 for r in R for t in T) + sum(C_flujo[i,j]*x_flujo[i,j,t].X for (i,j) in A for t in T)
-        if presupuesto_total > B_max + 1e-6:
+        if presupuesto_total > B_max:
             factible = False
-            inconsistencias.append(f"Presupuesto excedido: {presupuesto_total:.2f} > {B_max}")
+            f.write(f"Presupuesto excedido: {presupuesto_total} > {B_max}\n")
         else:
-            inconsistencias.append(f"Presupuesto dentro del límite: {presupuesto_total:.2f} ≤ {B_max}")
+            f.write(f"Presupuesto dentro del límite: {presupuesto_total} <= {B_max}\n")
 
         # PM máximo
         for r in R:
             for t in T:
-                if PM[r,t].X > PM_max[r,t] + 1e-6:
+                if PM[r,t].X > PM_max[r,t]:
                     factible = False
-                    inconsistencias.append(f"PM máximo excedido en {r}, mes {t+1}: {PM[r,t].X:.2f} > {PM_max[r,t]}")
+                    f.write(f"PM máximo excedido en {r}, mes {t+1}: {PM[r,t].X:.2f} > {PM_max[r,t]}\n")
 
-        if factible:
-            f.write("La solución es factible según las restricciones definidas.\n")
-        else:
-            f.write("La solución presenta inconsistencias:\n")
-            f.write("\n".join(inconsistencias) + "\n")
-
+        f.write("\nLa solución es óptima")
     else:
         f.write("No se encontró solución óptima.\n")
 
 print("Resultados guardados en 'resultados.txt'")
 
-
-'''print("\n" + "-"*10 + " Manejo de Soluciones " + "-"*10)
-
-if model.Status == GRB.OPTIMAL:
-    # (a) Valor óptimo del problema
-    print("\n(a) Valor óptimo del problema")
-    print(f"El valor óptimo de PM total es: {model.ObjVal:.2f}")
-
-    # (b) Agua aplicada total por relave y por mes
-    print("\n(b) Agua aplicada por relave y por mes")
-    for r in R:
-        total_agua_r = sum(x_agua[r,t].X for t in T)
-        print(f"Relave {r}, agua total aplicada: {total_agua_r:.2f}")
-        for t in T:
-            print(f"  Mes {t+1}: {x_agua[r,t].X:.2f} toneladas, cubierta aplicada: {x_cubierta[r,t].X:.2f}, PM: {PM[r,t].X:.2f}")
-
-    # (c) Flujo total desde cada fuente y por arco
-    print("\n(c) Flujo total desde cada fuente y por arco")
-    for f in F:
-        total_fuente = sum(x_flujo[i,j,t].X for (i,j) in A if i==f for t in T)
-        print(f"Fuente {f}, flujo total enviado: {total_fuente:.2f}")
-    for (i,j) in A:
-        total_arco = sum(x_flujo[i,j,t].X for t in T)
-        print(f"Arco {i}->{j}, flujo total: {total_arco:.2f}")
-
-    # (d) Cubierta vegetal activa y mantenciones
-    print("\n(d) Cubierta vegetal y mantenciones por relave")
-    for r in R:
-        total_cubierta = sum(z_veg[r,t].X for t in T)
-        total_mant = sum(y_mant[r,t].X for t in T)
-        print(f"Relave {r}: cubierta activa {total_cubierta:.0f} meses, mantenciones {total_mant:.0f} meses")
-
-    # (e) Justificación de factibilidad y consistencia
-    print("\n(e) Validación de factibilidad y consistencia")
-    factible = True
-    inconsistencias = []
-
-    # Presupuesto
-    presupuesto_total = sum(C_agua[r,t]*x_agua[r,t].X + C_vegmant[r,t]*z_veg[r,t].X + C_veginst[r,t]*y_veg[r,t].X 
-                            for r in R for t in T) + sum(C_flujo[i,j]*x_flujo[i,j,t].X for (i,j) in A for t in T)
-    if presupuesto_total > B_max + 1e-6:
-        factible = False
-        inconsistencias.append(f"Presupuesto excedido: {presupuesto_total:.2f} > {B_max}")
-    else:
-        inconsistencias.append(f"Presupuesto dentro del límite: {presupuesto_total:.2f} ≤ {B_max}")
-
-    # PM máximo
-    for r in R:
-        for t in T:
-            if PM[r,t].X > PM_max[r,t] + 1e-6:
-                factible = False
-                inconsistencias.append(f"PM máximo excedido en {r}, mes {t+1}: {PM[r,t].X:.2f} > {PM_max[r,t]}")
-
-    # Agua mínima y máxima
-    for r in R:
-        for t in T:
-            if x_agua[r,t].X < a[r]-1e-6 and y_agua[r,t].X > 0.5:
-                factible = False
-                inconsistencias.append(f"Agua aplicada menor que mínima en {r}, mes {t+1}: {x_agua[r,t].X:.2f} < {a[r]}")
-            if x_agua[r,t].X > U_agua[r] + 1e-6:
-                factible = False
-                inconsistencias.append(f"Agua aplicada excede máxima en {r}, mes {t+1}: {x_agua[r,t].X:.2f} > {U_agua[r]}")
-
-    # Cubierta coherente
-    for r in R:
-        for t in T:
-            if x_cubierta[r,t].X > H_cubierta[r]*z_veg[r,t].X + 1e-6:
-                factible = False
-                inconsistencias.append(f"Cubierta excedida en {r}, mes {t+1}: {x_cubierta[r,t].X:.2f} > {H_cubierta[r]}")
-
-    if factible:
-        print("La solución es factible según las restricciones definidas.")
-    else:
-        print("La solución presenta inconsistencias:")
-        print("\n".join(inconsistencias))
-else:
-    print("No se encontró solución óptima.")
-'''

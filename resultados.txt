@@ -1,89 +1,91 @@
 ---------- Manejo de Soluciones ----------
 
-(a) Valor 髉timo del problema: 203.00
+(a) Valor 贸ptimo del problema: 202.9985382642572
 
 (b) Agua aplicada por relave y por mes:
-Relave Talabre, agua total aplicada: 170.00
-  Mes 1: agua=120.00, cubierta=0.00, PM=0.00
-  Mes 2: agua=0.00, cubierta=0.00, PM=2.00
-  Mes 3: agua=0.00, cubierta=0.00, PM=4.00
-  Mes 4: agua=0.00, cubierta=0.00, PM=6.00
-  Mes 5: agua=0.00, cubierta=0.00, PM=8.00
-  Mes 6: agua=0.00, cubierta=0.00, PM=10.00
-  Mes 7: agua=50.00, cubierta=0.00, PM=7.00
-  Mes 8: agua=0.00, cubierta=0.00, PM=9.00
-  Mes 9: agua=0.00, cubierta=0.00, PM=11.00
-  Mes 10: agua=0.00, cubierta=0.00, PM=13.00
-  Mes 11: agua=0.00, cubierta=0.00, PM=15.00
-  Mes 12: agua=0.00, cubierta=0.00, PM=17.00
-Relave Pampa Austral, agua total aplicada: 263.08
-  Mes 1: agua=110.00, cubierta=0.00, PM=1.00
-  Mes 2: agua=0.00, cubierta=0.00, PM=3.00
-  Mes 3: agua=50.00, cubierta=0.00, PM=0.00
-  Mes 4: agua=0.00, cubierta=0.00, PM=2.00
-  Mes 5: agua=0.00, cubierta=0.00, PM=4.00
-  Mes 6: agua=53.08, cubierta=0.00, PM=0.69
-  Mes 7: agua=0.00, cubierta=0.00, PM=2.69
-  Mes 8: agua=0.00, cubierta=0.00, PM=4.69
-  Mes 9: agua=50.00, cubierta=0.00, PM=1.69
-  Mes 10: agua=0.00, cubierta=0.00, PM=3.69
-  Mes 11: agua=0.00, cubierta=0.00, PM=5.69
-  Mes 12: agua=0.00, cubierta=0.00, PM=7.69
-Relave Potrerillos II, agua total aplicada: 200.00
-  Mes 1: agua=50.00, cubierta=2.30, PM=2.23
-  Mes 2: agua=0.00, cubierta=2.30, PM=0.54
-  Mes 3: agua=0.00, cubierta=2.30, PM=2.77
-  Mes 4: agua=50.00, cubierta=2.30, PM=0.00
-  Mes 5: agua=0.00, cubierta=2.30, PM=0.54
-  Mes 6: agua=0.00, cubierta=2.30, PM=2.77
-  Mes 7: agua=50.00, cubierta=2.30, PM=0.00
-  Mes 8: agua=0.00, cubierta=2.30, PM=0.54
-  Mes 9: agua=0.00, cubierta=2.30, PM=2.77
-  Mes 10: agua=50.00, cubierta=2.30, PM=0.00
-  Mes 11: agua=0.00, cubierta=2.30, PM=0.00
-  Mes 12: agua=0.00, cubierta=2.30, PM=0.00
-Relave Ovejeria, agua total aplicada: 300.00
-  Mes 1: agua=120.00, cubierta=0.00, PM=0.00
-  Mes 2: agua=0.00, cubierta=0.00, PM=2.00
-  Mes 3: agua=0.00, cubierta=0.00, PM=4.00
-  Mes 4: agua=60.00, cubierta=0.00, PM=0.00
-  Mes 5: agua=0.00, cubierta=0.00, PM=2.00
-  Mes 6: agua=0.00, cubierta=0.00, PM=4.00
-  Mes 7: agua=60.00, cubierta=0.00, PM=0.00
-  Mes 8: agua=0.00, cubierta=0.00, PM=2.00
-  Mes 9: agua=0.00, cubierta=0.00, PM=4.00
-  Mes 10: agua=60.00, cubierta=0.00, PM=0.00
-  Mes 11: agua=0.00, cubierta=0.00, PM=2.00
-  Mes 12: agua=0.00, cubierta=0.00, PM=4.00
-Relave Caren, agua total aplicada: 280.00
-  Mes 1: agua=120.00, cubierta=0.00, PM=0.00
-  Mes 2: agua=0.00, cubierta=0.00, PM=2.00
-  Mes 3: agua=0.00, cubierta=0.00, PM=4.00
-  Mes 4: agua=60.00, cubierta=0.00, PM=0.00
-  Mes 5: agua=0.00, cubierta=0.00, PM=2.00
-  Mes 6: agua=0.00, cubierta=0.00, PM=4.00
-  Mes 7: agua=50.00, cubierta=0.00, PM=1.00
-  Mes 8: agua=0.00, cubierta=0.00, PM=3.00
-  Mes 9: agua=50.00, cubierta=0.00, PM=0.00
-  Mes 10: agua=0.00, cubierta=0.00, PM=2.00
-  Mes 11: agua=0.00, cubierta=0.00, PM=4.00
-  Mes 12: agua=0.00, cubierta=0.00, PM=6.00
+Relave Talabre, agua total aplicada: 170.0
+  Mes 1: agua=120.0, cubierta=0.0, PM=0.0
+  Mes 2: agua=0.0, cubierta=0.0, PM=2.0
+  Mes 3: agua=0.0, cubierta=0.0, PM=4.0
+  Mes 4: agua=0.0, cubierta=0.0, PM=6.0
+  Mes 5: agua=0.0, cubierta=0.0, PM=8.0
+  Mes 6: agua=0.0, cubierta=0.0, PM=10.0
+  Mes 7: agua=50.0, cubierta=0.0, PM=7.0
+  Mes 8: agua=0.0, cubierta=0.0, PM=9.0
+  Mes 9: agua=0.0, cubierta=0.0, PM=11.0
+  Mes 10: agua=0.0, cubierta=0.0, PM=13.0
+  Mes 11: agua=0.0, cubierta=0.0, PM=15.0
+  Mes 12: agua=0.0, cubierta=0.0, PM=17.0
+Relave Pampa Austral, agua total aplicada: 263.0834519470611
+  Mes 1: agua=110.0, cubierta=0.0, PM=1.0
+  Mes 2: agua=0.0, cubierta=0.0, PM=3.0
+  Mes 3: agua=50.0, cubierta=0.0, PM=0.0
+  Mes 4: agua=0.0, cubierta=0.0, PM=2.0
+  Mes 5: agua=0.0, cubierta=0.0, PM=4.0
+  Mes 6: agua=53.08345194706113, cubierta=0.0, PM=0.6916548052938865
+  Mes 7: agua=0.0, cubierta=0.0, PM=2.6916548052938865
+  Mes 8: agua=0.0, cubierta=0.0, PM=4.6916548052938865
+  Mes 9: agua=50.0, cubierta=0.0, PM=1.6916548052938865
+  Mes 10: agua=0.0, cubierta=0.0, PM=3.6916548052938865
+  Mes 11: agua=0.0, cubierta=0.0, PM=5.6916548052938865
+  Mes 12: agua=0.0, cubierta=0.0, PM=7.6916548052938865
+Relave Potrerillos II, agua total aplicada: 200.0
+  Mes 1: agua=50.0, cubierta=2.3038067159999827, PM=2.2303806715999985
+  Mes 2: agua=0.0, cubierta=2.303806716, PM=0.5392386568000004
+  Mes 3: agua=0.0, cubierta=2.303806716, PM=2.7696193284
+  Mes 4: agua=50.0, cubierta=2.303806716, PM=0.0
+  Mes 5: agua=0.0, cubierta=2.303806716, PM=0.5392386568000004
+  Mes 6: agua=0.0, cubierta=2.303806716, PM=2.7696193284
+  Mes 7: agua=50.0, cubierta=2.303806716, PM=0.0
+  Mes 8: agua=0.0, cubierta=2.303806716, PM=0.5392386568000004
+  Mes 9: agua=0.0, cubierta=2.303806716, PM=2.7696193284
+  Mes 10: agua=50.0, cubierta=2.303806716, PM=0.0
+  Mes 11: agua=0.0, cubierta=2.303806716, PM=0.0
+  Mes 12: agua=0.0, cubierta=2.303806716, PM=0.0
+Relave Ovejeria, agua total aplicada: 300.0
+  Mes 1: agua=120.0, cubierta=0.0, PM=0.0
+  Mes 2: agua=0.0, cubierta=0.0, PM=2.0
+  Mes 3: agua=0.0, cubierta=0.0, PM=4.0
+  Mes 4: agua=60.0, cubierta=0.0, PM=0.0
+  Mes 5: agua=0.0, cubierta=0.0, PM=2.0
+  Mes 6: agua=0.0, cubierta=0.0, PM=4.0
+  Mes 7: agua=60.0, cubierta=0.0, PM=0.0
+  Mes 8: agua=0.0, cubierta=0.0, PM=2.0
+  Mes 9: agua=0.0, cubierta=0.0, PM=4.0
+  Mes 10: agua=60.0, cubierta=0.0, PM=0.0
+  Mes 11: agua=0.0, cubierta=0.0, PM=2.0
+  Mes 12: agua=0.0, cubierta=0.0, PM=4.0
+Relave Caren, agua total aplicada: 280.0
+  Mes 1: agua=120.0, cubierta=0.0, PM=0.0
+  Mes 2: agua=0.0, cubierta=0.0, PM=2.0
+  Mes 3: agua=0.0, cubierta=0.0, PM=4.0
+  Mes 4: agua=60.0, cubierta=0.0, PM=0.0
+  Mes 5: agua=0.0, cubierta=0.0, PM=2.0
+  Mes 6: agua=0.0, cubierta=0.0, PM=4.0
+  Mes 7: agua=50.0, cubierta=0.0, PM=1.0
+  Mes 8: agua=0.0, cubierta=0.0, PM=3.0
+  Mes 9: agua=50.0, cubierta=0.0, PM=0.0
+  Mes 10: agua=0.0, cubierta=0.0, PM=2.0
+  Mes 11: agua=0.0, cubierta=0.0, PM=4.0
+  Mes 12: agua=0.0, cubierta=0.0, PM=6.0
 
 (c) Flujo total desde cada fuente y por arco:
-Fuente F1, flujo total enviado: 433.08
-Fuente F2, flujo total enviado: 780.00
-Arco F1->Talabre, flujo total: 170.00
-Arco F1->Pampa Austral, flujo total: 263.08
-Arco F2->Potrerillos II, flujo total: 200.00
-Arco F2->Ovejeria, flujo total: 300.00
-Arco F2->Caren, flujo total: 280.00
+Fuente F1, flujo total enviado: 433.0834519470611
+Fuente F2, flujo total enviado: 780.0
+Arco F1->Talabre, flujo total: 170.0
+Arco F1->Pampa Austral, flujo total: 263.0834519470611
+Arco F2->Potrerillos II, flujo total: 200.0
+Arco F2->Ovejeria, flujo total: 300.0
+Arco F2->Caren, flujo total: 280.0
 
 (d) Cubierta vegetal y mantenciones por relave:
-Relave Talabre: cubierta activa 0 meses, mantenciones 2 meses
-Relave Pampa Austral: cubierta activa 0 meses, mantenciones 4 meses
-Relave Potrerillos II: cubierta activa 12 meses, mantenciones 4 meses
-Relave Ovejeria: cubierta activa 0 meses, mantenciones 4 meses
-Relave Caren: cubierta activa 0 meses, mantenciones 4 meses
+Relave Talabre: cubierta activa 0.0 meses, mantenciones 2.0 meses
+Relave Pampa Austral: cubierta activa 0.0 meses, mantenciones 4.0 meses
+Relave Potrerillos II: cubierta activa 12.0 meses, mantenciones 4.0 meses
+Relave Ovejeria: cubierta activa 0.0 meses, mantenciones 4.0 meses
+Relave Caren: cubierta activa 0.0 meses, mantenciones 4.0 meses
 
-(e) Validaci髇 de factibilidad y consistencia:
-La soluci髇 es factible seg鷑 las restricciones definidas.
+(e) Validaci贸n de factibilidad y consistencia:
+Presupuesto dentro del l铆mite: 1011130977779.999 <= 1011130977780
+
+La soluci贸n es 贸ptima
