@@ -1,51 +1,46 @@
 \ Model _copy
 \ LP format - for model browsing. Use MPS format to capture full model detail.
-\ Signature: 0xd0e13c08286500b9
+\ Signature: 0xd7bca51a41eeacc7
 Minimize
  
 Subject To
- R240: - 0.00121650169404965 x_cubierta[Talabre,0]
-   + beta_efectivo[Talabre,0] <= 0
- R289: - 5 z_veg[Potrerillos_II,0] + beta_efectivo[Potrerillos_II,0] <= 0
- R336: - 0.00112638910271853 x_cubierta[Caren,0] + beta_efectivo[Caren,0]
+ R240: - 0.238239691762684 x_cubierta[Talabre,0] + beta_efectivo[Talabre,0]
    <= 0
+ R241: - 979.2 z_veg[Talabre,0] + beta_efectivo[Talabre,0] <= 0
+ R264: - 0.0108084879333901 x_cubierta[Pampa_Austral,0]
+   + beta_efectivo[Pampa_Austral,0] <= 0
  R360: - 0.1 x_agua[Talabre,0] + 0.1 x_cubierta[Talabre,0] - PM[Talabre,0]
-   - beta_efectivo[Talabre,0] = -6.4808787879999995e+08
- R384: - 0.1 x_agua[Potrerillos_II,0] + 0.1 x_cubierta[Potrerillos_II,0]
-   - PM[Potrerillos_II,0] - beta_efectivo[Potrerillos_II,0] = -363266.2429
- R408: - 0.1 x_agua[Caren,0] + 0.1 x_cubierta[Caren,0] - PM[Caren,0]
-   - beta_efectivo[Caren,0] = -2.2270683109999999e+08
+   - beta_efectivo[Talabre,0] = -1.296177753e+06
+ R372: - 0.1 x_agua[Pampa_Austral,0] + 0.1 x_cubierta[Pampa_Austral,0]
+   - PM[Pampa_Austral,0] - beta_efectivo[Pampa_Austral,0] = -333320.8382
  R480: 0.2 PM[Talabre,0] + 0.2 PM[Pampa_Austral,0]
    + 0.2 PM[Potrerillos_II,0] + 0.2 PM[Ovejeria,0] + 0.2 PM[Caren,0]
    <= 130
  R987: - x_agua[Talabre,0]
    + x_flujo[Laguna_de_Aguas_Claras__Tranque_Talabre,Talabre,0]
    + x_flujo[Cuenca_del_río_Loa,Talabre,0] = 0
- R1011: - x_agua[Potrerillos_II,0]
-   + x_flujo[Cuenca_del_río_Salado,Potrerillos_II,0] = 0
- R1035: - x_agua[Caren,0] + x_flujo[Laguna_de_Aguas_Claras__Carén,Caren,0]
-   + x_flujo[Cuenca_del_río_Maipo,Caren,0] = 0
+ R999: - x_agua[Pampa_Austral,0]
+   + x_flujo[Laguna_de_Aguas_Claras__Tranque_Pampa_austral,Pampa_Austral,0]
+   + x_flujo[Cuenca_del_río_Salado,Pampa_Austral,0] = 0
  R1047: x_flujo[Laguna_de_Aguas_Claras__Tranque_Talabre,Talabre,0]
    <= 1.78848e+06
  R1059: x_flujo[Cuenca_del_río_Loa,Talabre,0] <= 6.29856e+06
- R1095: x_flujo[Cuenca_del_río_Salado,Potrerillos_II,0] <= 518400
- R1131: x_flujo[Laguna_de_Aguas_Claras__Carén,Caren,0] <= 259200
- R1143: x_flujo[Cuenca_del_río_Maipo,Caren,0] <= 3.7757664e+08
+ R1071:
+   x_flujo[Laguna_de_Aguas_Claras__Tranque_Pampa_austral,Pampa_Austral,0]
+   <= 129600
+ R1083: x_flujo[Cuenca_del_río_Salado,Pampa_Austral,0] <= 518400
 Bounds
  x_agua[Talabre,0] free
- x_agua[Potrerillos_II,0] free
- x_agua[Caren,0] free
+ x_agua[Pampa_Austral,0] free
+ x_cubierta[Talabre,0] free
  x_flujo[Laguna_de_Aguas_Claras__Tranque_Talabre,Talabre,0] free
  x_flujo[Cuenca_del_río_Loa,Talabre,0] free
- x_flujo[Cuenca_del_río_Salado,Potrerillos_II,0] free
- x_flujo[Laguna_de_Aguas_Claras__Carén,Caren,0] free
- x_flujo[Cuenca_del_río_Maipo,Caren,0] free
+ x_flujo[Laguna_de_Aguas_Claras__Tranque_Pampa_austral,Pampa_Austral,0] free
+ x_flujo[Cuenca_del_río_Salado,Pampa_Austral,0] free
  PM[Talabre,0] free
- PM[Potrerillos_II,0] free
- PM[Caren,0] free
+ PM[Pampa_Austral,0] free
  beta_efectivo[Talabre,0] free
- beta_efectivo[Potrerillos_II,0] free
- beta_efectivo[Caren,0] free
+ beta_efectivo[Pampa_Austral,0] free
 Binaries
- z_veg[Potrerillos_II,0]
+ z_veg[Talabre,0]
 End
