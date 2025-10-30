@@ -21,27 +21,27 @@ Subject To
    + 0.2 PM[Potrerillos_II,0] + 0.2 PM[Ovejeria,0] + 0.2 PM[Caren,0]
    <= 130
  R987: - x_agua[Talabre,0]
-   + x_flujo[Laguna_de_Aguas_Claras__Tranque_Talabre,Talabre,0]
-   + x_flujo[Cuenca_del_río_Loa,Talabre,0] = 0
+   + x_flujo[Laguna_de_Aguas_Claras_Tranque_Talabre,Talabre,0]
+   + x_flujo[Cuenca_del_rio_Loa,Talabre,0] = 0
  R999: - x_agua[Pampa_Austral,0]
-   + x_flujo[Laguna_de_Aguas_Claras__Tranque_Pampa_austral,Pampa_Austral,0]
-   + x_flujo[Cuenca_del_río_Salado,Pampa_Austral,0] = 0
- R1047: x_flujo[Laguna_de_Aguas_Claras__Tranque_Talabre,Talabre,0]
+   + x_flujo[Laguna_de_Aguas_Claras_Tranque_Pampa_austral,Pampa_Austral,0]
+   + x_flujo[Cuenca_del_rio_Salado,Pampa_Austral,0] = 0
+ R1047: x_flujo[Laguna_de_Aguas_Claras_Tranque_Talabre,Talabre,0]
    <= 1.78848e+06
- R1059: x_flujo[Cuenca_del_río_Loa,Talabre,0] <= 6.29856e+06
+ R1059: x_flujo[Cuenca_del_rio_Loa,Talabre,0] <= 6.29856e+06
  R1071:
-   x_flujo[Laguna_de_Aguas_Claras__Tranque_Pampa_austral,Pampa_Austral,0]
+   x_flujo[Laguna_de_Aguas_Claras_Tranque_Pampa_austral,Pampa_Austral,0]
    <= 129600
- R1083: x_flujo[Cuenca_del_río_Salado,Pampa_Austral,0] <= 518400
+ R1083: x_flujo[Cuenca_del_rio_Salado,Pampa_Austral,0] <= 518400
 Bounds
  x_agua[Talabre,0] free
  x_agua[Pampa_Austral,0] free
  x_cubierta[Talabre,0] free
  x_cubierta[Pampa_Austral,0] free
- x_flujo[Laguna_de_Aguas_Claras__Tranque_Talabre,Talabre,0] free
- x_flujo[Cuenca_del_río_Loa,Talabre,0] free
- x_flujo[Laguna_de_Aguas_Claras__Tranque_Pampa_austral,Pampa_Austral,0] free
- x_flujo[Cuenca_del_río_Salado,Pampa_Austral,0] free
+ x_flujo[Laguna_de_Aguas_Claras_Tranque_Talabre,Talabre,0] free
+ x_flujo[Cuenca_del_rio_Loa,Talabre,0] free
+ x_flujo[Laguna_de_Aguas_Claras_Tranque_Pampa_austral,Pampa_Austral,0] free
+ x_flujo[Cuenca_del_rio_Salado,Pampa_Austral,0] free
  PM[Talabre,0] free
  PM[Pampa_Austral,0] free
  beta_efectivo[Talabre,0] free
