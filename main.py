@@ -15,18 +15,19 @@ cvegmant_df = pd.read_csv("datos/Cvegmant.csv")
 hmant_df = pd.read_csv("datos/Hmant.csv")
 pmprom_df = pd.read_csv("datos/PMprom.csv")
 pmmax_df = pd.read_csv("datos/PMmax.csv")
-#pcubierta_df = pd.read_csv("datos/Pcubierta.csv")
+
+pcubierta_df = pd.read_csv("datos/Pcubierta.csv")
+fuentes_df = pd.read_csv("datos/Fuentes.csv")
+arcos_df = pd.read_csv("datos/Arcos.csv")
+pmbase_df = pd.read_csv("datos/PMbase.csv")
+wbase_df = pd.read_csv("datos/Wbase.csv")
+cflujo_df = pd.read_csv("datos/Cflujo.csv")
+kflujo_df = pd.read_csv("datos/Kflujo.csv")
 
 #FALTAN
-#fuentes_df = pd.read_csv("datos/Fuentes.csv")
-#arcos_df = pd.read_csv("datos/Arcos.csv")
 #pmapagregado_df = pd.read_csv("datos/PMapagregado.csv")
-#pmbase_df = pd.read_csv("datos/PMbase.csv")
 #alpha_df = pd.read_csv("datos/Alpha.csv")
 #beta_df = pd.read_csv("datos/Beta.csv")
-#wbase_df = pd.read_csv("datos/Wbase.csv")
-#cflujo_df = pd.read_csv("datos/Cflujo.csv")
-#kflujo_df = pd.read_csv("datos/Kflujo.csv")
 #a_df = pd.read_csv("datos/A.csv")
 #wentrante_df = pd.read_csv("datos/Wentrante.csv")
 
@@ -37,13 +38,12 @@ pmmax_df = pd.read_csv("datos/PMmax.csv")
 T = list(range(12))  # 12 meses
 #relaves, r
 R = relaves_df["Relave"].tolist()  #5r['Talabre', 'Pampa Austral', 'Potrerillos II', 'Ovejeria', 'Caren']
-
-#FALTA fuentes de agua, f 
-F = ['F1', 'F2'] 
+#fuentes de agua, f 
+F = fuentes_df["Fuentes"].tolist()
 #nodos de la red, fuentes, nodos intermedios y relaves, n
 N = F + R  
-#FALTA arcos de la red, (i,j)
-A = [('F1', 'Talabre'), ('F1', 'Pampa Austral'), ('F2', 'Potrerillos II'), ('F2', 'Ovejeria'), ('F2', 'Caren')]
+#arcos de la red, (i,j)
+A = [(row["Fuentes"], row["Relaves"]) for _, row in arcos_df.iterrows()]
 
 # --------Parámetros----------------------------------
 #costo por ton de agua aplicado en relave r, mes t
@@ -74,11 +74,21 @@ H_mant = {row["Relaves"]: row["Hmant"] /1000 for _, row in hmant_df.iterrows()}
 #H_mant = {r: 50 for r in R}
 
 #cantidad  maxima de periodos consecutivos que pueden pasar sin satisfacer completamente el requerimiento de agua de la cubierta
-P_cubierta = 3
+P_cubierta = {row["Relaves"]: int(row["Pcubierta"]) for _, row in pcubierta_df.iterrows()}
+#concentracion inicial de PM en relave r
+#PM_base = {r: 10 for r in R}
+PM_base = {row["Relaves"]: float(row["PMbase"]) for _, row in pmbase_df.iterrows()}
+#cantidad agua inicial en fuente f
+#W_base = {f: 1000 for f in F}
+W_base = {row["Fuentes"]: float(row["Wbase"]) for _, row in wbase_df.iterrows()}
+#costo transportar 1 ton de agua por arco (i.j)
+#C_flujo = {(i,j): 5 for (i,j) in A}  # todos los arcos tienen costo 5
+C_flujo = {(row["Fuentes"], row["Relaves"]): float(row["Cflujo"]) for _, row in cflujo_df.iterrows()}
+#capacidad maxima de flujo de agua en argo (i,j) mensualmente
+#K_flujo ={(i,j): 500 for (i,j) in A}
+K_flujo = {(row["Fuentes"], row["Relaves"]): float(row["Kflujo"]) for _, row in kflujo_df.iterrows()}
 
 #------FALTAN:---------
-#concentracion inicial de PM en relave r
-PM_base = {r: 10 for r in R}
 #concentracion de PM que se agrega al relave r, mes t
 PM_agregado = {(r,t): 2 for r in R for t in T}
 #reducción PM por cada ton de agua aplicada en relave r
@@ -87,13 +97,6 @@ alpha = {r: 0.1 for r in R}
 beta = {r: 5 for r in R}
 #ton de agua minima que se aplica a un relave r si se decide humedecerlo
 a = {r: 50 for r in R}
-
-#cantidad agua inicial en fuente f
-W_base = {f: 1000 for f in F}
-#costo transportar 1 ton de agua por arco (i.j)
-C_flujo = {(i,j): 5 for (i,j) in A}  # todos los arcos tienen costo 5
-#capacidad maxima de flujo de agua en argo (i,j) mensualmente
-K_flujo ={(i,j): 500 for (i,j) in A}
 #flujo neto entrante a fuente f durante mes t.
 W_entrante = {(f,t): 100 for f in F for t in T}
 
@@ -135,7 +138,8 @@ for r in R:
 #R3 Restistencia de cubierta - REVISAR
 for r in R:
     for t in T:
-        model.addConstr(quicksum(1-rr[r,t2] for t2 in range(t,min(t+P_cubierta,len(T)))) <= (P_cubierta*z_veg[r,t])+(len(T)*(1 - z_veg[r,t])))
+        model.addConstr(quicksum(1 - rr[r,t2] for t2 in range(t, min(t + P_cubierta[r], len(T)))) <= (P_cubierta[r] * z_veg[r,t]) + (len(T) * (1 - z_veg[r,t])))
+        #model.addConstr(quicksum(1-rr[r,t2] for t2 in range(t,min(t+P_cubierta,len(T)))) <= (P_cubierta*z_veg[r,t])+(len(T)*(1 - z_veg[r,t])))
 
 #R4 Reducción de PM efectiva
 for r in R:
