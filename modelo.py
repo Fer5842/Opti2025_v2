@@ -2,13 +2,18 @@ from gurobipy import Model, GRB, quicksum
 import numpy as np
 import pandas as pd
 
+# carga de datos
+relaves_df = pd.read_csv("data/Relaves.csv")
+
 # datos/parámetros del modelo
 
 #   conjuntos
 #meses de planificación, t
 T = list(range(12))  # 12 meses
 #relaves, r
+#R = relaves_df["Relave"].tolist()  #5r['Talabre', 'Pampa Austral', 'Potrerillos II', 'Ovejeria', 'Caren']
 R = ['R1', 'R2', 'R3']  # 3 relaves
+
 #fuentes de agua, f
 F = ['F1', 'F2']  # 2 fuentes de agua
 #nodos de la red, fuentes, nodos intermedios y relaves, n
@@ -24,7 +29,7 @@ C_veginst = {(r,t): 5 for r in R for t in T}
 #costo mantención cubierta vegetal en relave r, mes t
 C_vegmant = {(r,t): 2 for r in R for t in T}
 #costo oportunidad realizar mantención en relave r, mes t
-C_mant = {(r,t): 3 for r in R for t in T}
+#C_mant = {(r,t): 3 for r in R for t in T}
 #concentracion inicial de PM en relave r
 PM_base = {r: 10 for r in R}
 #concentracion de PM que se agrega al relave r, mes t
@@ -143,15 +148,23 @@ for r in R:
         model.addConstr(y_veg[r,t] <= y_mant[r,t])
 
 #R11 Presencia de la cubierta vegetal
-for r in R:
+'''for r in R:
     for t in T:
         model.addConstrs((z_veg[r,t] >= y_veg[r,t2] for t2 in range(max(0, t - P[r] + 1), t + 1)))
         model.addConstr(z_veg[r,t] <= quicksum(y_veg[r,t2] for t2 in range(max(0, t - P[r] + 1), t + 1)))
         model.addConstr(quicksum(y_veg[r,t2] for t2 in range(t, min(t + P[r], len(T)))) <= 1)
+'''
+for r in R:
+    for t in T:
+        model.addConstr(z_veg[r,t] >= y_veg[r,t])
+        model.addConstr(z_veg[r,t] <= quicksum(y_veg[r,t2] for t2 in range(max(0, t-P[r]+1), t+1)))
+        if t > 0:
+            model.addConstr(z_veg[r,t] <= z_veg[r,t-1] + y_veg[r,t])
+            model.addConstr(z_veg[r,t-1] + y_veg[r,t] <= 1)
 
 #R12 Presupuesto total
 model.addConstr(
-    quicksum(C_agua[r,t]*x_agua[r,t] + C_vegmant[r,t]*z_veg[r,t] + C_mant[r,t]*y_mant[r,t] + C_veginst[r,t]*y_veg[r,t] for r in R for t in T) 
+    quicksum(C_agua[r,t]*x_agua[r,t] + C_vegmant[r,t]*z_veg[r,t] + C_veginst[r,t]*y_veg[r,t] for r in R for t in T) 
     + quicksum(C_flujo[i,j]*x_flujo[i,j,t] for (i,j) in A for t in T)
     <= B_max
 )
