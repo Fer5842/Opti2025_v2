@@ -22,12 +22,11 @@ wbase_df = pd.read_csv("datos/Wbase.csv")
 cflujo_df = pd.read_csv("datos/Cflujo.csv")
 kflujo_df = pd.read_csv("datos/Kflujo.csv")
 beta_df = pd.read_csv("datos/Beta.csv")
-
 pmmax_df = pd.read_csv("datos/PMmax.csv")
+alpha_df = pd.read_csv("datos/Alpha.csv")
+pmagregado_df = pd.read_csv("datos/PMagregado.csv")
 
 #FALTAN
-#pmapagregado_df = pd.read_csv("datos/PMapagregado.csv")
-#alpha_df = pd.read_csv("datos/Alpha.csv")
 #a_df = pd.read_csv("datos/A.csv")
 #wentrante_df = pd.read_csv("datos/Wentrante.csv")
 
@@ -82,12 +81,13 @@ P_max_val = int(pmax_df["Pmax"].iloc[0])
 P_max = {r: P_max_val for r in R}
 #maxima reduccion de PM  por cubierta vegetal en relave r por mes de planificación
 beta = {row["Relaves"]: float(row["beta"]) for _, row in beta_df.iterrows()}
+#concentracion de PM que se agrega al relave r, mes t
+PM_agregado = {(row["Relaves"], row["Mes"]-1): float(row["PMagregado"]) for _, row in pmagregado_df.iterrows()}
+#reducción PM por cada ton de agua aplicada en relave r
+alpha = {row["Relaves"]: float(row["alpha"]) for _, row in alpha_df.iterrows()}
+
 
 #------FALTAN:---------
-#concentracion de PM que se agrega al relave r, mes t
-PM_agregado = {(r,t): 2 for r in R for t in T}
-#reducción PM por cada ton de agua aplicada en relave r
-alpha = {r: 0.1 for r in R}
 #ton de agua minima que se aplica a un relave r si se decide humedecerlo
 a = {r: 50 for r in R}
 #flujo neto entrante a fuente f durante mes t.

@@ -1,6 +1,6 @@
 \ Model _copy
 \ LP format - for model browsing. Use MPS format to capture full model detail.
-\ Signature: 0xd7bca51a41eeacc7
+\ Signature: 0xa611aa3f54f10f89
 Minimize
  
 Subject To
@@ -9,10 +9,14 @@ Subject To
  R241: - 979.2 z_veg[Talabre,0] + beta_efectivo[Talabre,0] <= 0
  R264: - 0.0108084879333901 x_cubierta[Pampa_Austral,0]
    + beta_efectivo[Pampa_Austral,0] <= 0
- R360: - 0.1 x_agua[Talabre,0] + 0.1 x_cubierta[Talabre,0] - PM[Talabre,0]
-   - beta_efectivo[Talabre,0] = -1.296177753e+06
- R372: - 0.1 x_agua[Pampa_Austral,0] + 0.1 x_cubierta[Pampa_Austral,0]
-   - PM[Pampa_Austral,0] - beta_efectivo[Pampa_Austral,0] = -333320.8382
+ R265: - 979.2 z_veg[Pampa_Austral,0] + beta_efectivo[Pampa_Austral,0]
+   <= 0
+ R360: - 6.769435226e-04 x_agua[Talabre,0]
+   + 6.769435226e-04 x_cubierta[Talabre,0] - PM[Talabre,0]
+   - beta_efectivo[Talabre,0] = -1.2961810530000001e+06
+ R372: - 0.000916566 x_agua[Pampa_Austral,0]
+   + 0.000916566 x_cubierta[Pampa_Austral,0] - PM[Pampa_Austral,0]
+   - beta_efectivo[Pampa_Austral,0] = -333346.9382
  R480: 0.2 PM[Talabre,0] + 0.2 PM[Pampa_Austral,0]
    + 0.2 PM[Potrerillos_II,0] + 0.2 PM[Ovejeria,0] + 0.2 PM[Caren,0]
    <= 130
@@ -33,6 +37,7 @@ Bounds
  x_agua[Talabre,0] free
  x_agua[Pampa_Austral,0] free
  x_cubierta[Talabre,0] free
+ x_cubierta[Pampa_Austral,0] free
  x_flujo[Laguna_de_Aguas_Claras__Tranque_Talabre,Talabre,0] free
  x_flujo[Cuenca_del_río_Loa,Talabre,0] free
  x_flujo[Laguna_de_Aguas_Claras__Tranque_Pampa_austral,Pampa_Austral,0] free
@@ -42,5 +47,5 @@ Bounds
  beta_efectivo[Talabre,0] free
  beta_efectivo[Pampa_Austral,0] free
 Binaries
- z_veg[Talabre,0]
+ z_veg[Talabre,0] z_veg[Pampa_Austral,0]
 End
