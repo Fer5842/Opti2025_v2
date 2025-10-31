@@ -25,10 +25,9 @@ beta_df = pd.read_csv("datos/Beta.csv")
 pmmax_df = pd.read_csv("datos/PMmax.csv")
 alpha_df = pd.read_csv("datos/Alpha.csv")
 pmagregado_df = pd.read_csv("datos/PMagregado.csv")
+wentrante_df = pd.read_csv("datos/Wentrante.csv")
 
-#FALTAN
-#a_df = pd.read_csv("datos/A.csv")
-#wentrante_df = pd.read_csv("datos/Wentrante.csv")
+
 
 # --------Datos--------------------------------------
 
@@ -86,13 +85,8 @@ PM_agregado = {(row["Relaves"], row["Mes"]-1): float(row["PMagregado"]) for _, r
 #reducción PM por cada ton de agua aplicada en relave r
 alpha = {row["Relaves"]: float(row["alpha"]) for _, row in alpha_df.iterrows()}
 
-
-#------FALTAN:---------
-#ton de agua minima que se aplica a un relave r si se decide humedecerlo
-a = {r: 50 for r in R}
 #flujo neto entrante a fuente f durante mes t.
-W_entrante = {(f,t): 100 for f in F for t in T}
-
+W_entrante = {(row["Fuentes"], row["Mes"] - 1): float(row["Wentrante"]) for _, row in wentrante_df.iterrows()}
 # --------Generar el modelo-----------------------------
 model = Model()
 
@@ -120,7 +114,7 @@ model.update()
 #R1 Consistencia de agua
 for r in R:
     for t in T:
-        model.addConstr(a[r]*y_agua[r,t] <= x_agua[r,t])
+        model.addConstr(H_mant[r]*y_agua[r,t] <= x_agua[r,t])
         model.addConstr(x_agua[r,t] <= U_agua[r]*y_agua[r,t])
 
 #R2 Capacidad de cubierta
@@ -189,26 +183,27 @@ model.addConstr(
     + quicksum(C_flujo[i,j]*x_flujo[i,j,t] for (i,j) in A for t in T)
     <= B_max
 )
-#Se elimino R13 Balance de flujo en nodos intermedios
 
-#R14 Condición inicial de la fuente
+#R13 Condición inicial de la fuente
 for f in F:
     model.addConstr(W[f,0] == W_base[f])
 
-#R15 Balance de la fuente para cada mes t 
+#R14 Balance de la fuente para cada mes t 
+'''for f in F:
+    for t in T:
+        if t > 0:
+            model.addConstr(W[f,t] == W[f,t-1] + W_entrante[f,t] - quicksum(x_flujo[i,j,t] for (i,j) in A if i == f))'''
 for f in F:
     for t in T:
         if t > 0:
-            model.addConstr(W[f,t] == W[f,t-1] + W_entrante[f,t] - quicksum(x_flujo[i,j,t] for (i,j) in A if i == f))
+            model.addConstr(W[f, t] == W[f, t-1]+ W_entrante.get((f, t), 0)- quicksum(x_flujo[i, j, t] for (i, j) in A if i == f))
 
-#Se elimino R16 No extraer más de lo disponible
-
-#R17 Nodos de relave
+#R15 Nodos de relave
 for r in R:
     for t in T:
         model.addConstr(quicksum(x_flujo[i,j,t] for (i,j) in A if j == r) == x_agua[r,t])
 
-#R18 Capacidad de las tuberías
+#R16 Capacidad de las tuberías
 for (i, j) in A:
     for t in T:
         model.addConstr(x_flujo[i,j,t] <= K_flujo[i, j])
